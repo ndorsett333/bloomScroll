@@ -2,6 +2,9 @@
 
 *.md
 
+# local design reference images, not part of the app
+/design-examples/
+
 # dependencies
 /node_modules
 /.pnp
