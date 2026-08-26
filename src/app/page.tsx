@@ -25,42 +25,44 @@ export default function Home() {
       </aside>
 
       <main className={styles.feed} id="discover">
-        <div className={styles.feedTopline}>
-          <div>
-            <p className={styles.eyebrow}>Monday, August 24</p>
-            <h1>Stay curious.</h1>
+        <div className={styles.feedScroller}>
+          <div className={styles.feedTopline}>
+            <div>
+              <p className={styles.eyebrow}>Monday, August 24</p>
+              <h1>Stay curious.</h1>
+            </div>
+            <div className={styles.counter}><span>01</span> / 08</div>
           </div>
-          <div className={styles.counter}><span>01</span> / 08</div>
-        </div>
 
-        <section className={styles.learningCard} aria-labelledby="card-title">
-          <div className={styles.cardHeader}>
-            <span className={styles.topic}>NATURAL HISTORY</span>
-            <div className={styles.cardActions}>
-              <button type="button" aria-label="Save this lesson">☆</button>
-              <button type="button" aria-label="More options">•••</button>
+          <section className={styles.learningCard} aria-labelledby="card-title">
+            <div className={styles.cardHeader}>
+              <span className={styles.topic}>NATURAL HISTORY</span>
+              <div className={styles.cardActions}>
+                <button type="button" aria-label="Save this lesson">☆</button>
+                <button type="button" aria-label="More options">•••</button>
+              </div>
             </div>
-          </div>
-          <div className={styles.cardBody}>
-            <div className={styles.illustration} aria-hidden="true">
-              <div className={styles.sun} />
-              <div className={`${styles.mountain} ${styles.mountainOne}`} />
-              <div className={`${styles.mountain} ${styles.mountainTwo}`} />
-              <div className={styles.tree} />
+            <div className={styles.cardBody}>
+              <div className={styles.illustration} aria-hidden="true">
+                <div className={styles.sun} />
+                <div className={`${styles.mountain} ${styles.mountainOne}`} />
+                <div className={`${styles.mountain} ${styles.mountainTwo}`} />
+                <div className={styles.tree} />
+              </div>
+              <div className={styles.lessonCopy}>
+                <p className={styles.lessonNumber}>01 / FIELD NOTE</p>
+                <h2 id="card-title">The forest<br />is always<br /><em>listening.</em></h2>
+                <p className={styles.description}>Trees can share nutrients and warnings through vast underground fungal networks. A forest is less a collection of individuals, and more a quiet conversation.</p>
+                <div className={styles.cardMeta}><span>2 min read</span><span>Science</span></div>
+              </div>
             </div>
-            <div className={styles.lessonCopy}>
-              <p className={styles.lessonNumber}>01 / FIELD NOTE</p>
-              <h2 id="card-title">The forest<br />is always<br /><em>listening.</em></h2>
-              <p className={styles.description}>Trees can share nutrients and warnings through vast underground fungal networks. A forest is less a collection of individuals, and more a quiet conversation.</p>
-              <div className={styles.cardMeta}><span>2 min read</span><span>Science</span></div>
-            </div>
-          </div>
-        </section>
+          </section>
 
-        <div className={styles.nextCue}>
-          <span className={styles.nextLine} />
-          <span>Scroll for the next note</span>
-          <span className={styles.downArrow}>↓</span>
+          <div className={styles.nextCue}>
+            <span className={styles.nextLine} />
+            <span>Scroll for the next note</span>
+            <span className={styles.downArrow}>↓</span>
+          </div>
         </div>
       </main>
 
