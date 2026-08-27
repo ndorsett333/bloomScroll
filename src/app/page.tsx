@@ -1,4 +1,10 @@
 import styles from "./page.module.css";
+import { dummyContent } from "@/data/dummy-content";
+import { ArticleCard } from "@/components/ArticleCard";
+import { RiddleCard } from "@/components/RiddleCard";
+import { PuzzleCard } from "@/components/PuzzleCard";
+import { QuizCard } from "@/components/QuizCard";
+import { isArticle, isRiddle, isPuzzle, isQuiz } from "@/types/content";
 
 export default function Home() {
   return (
@@ -31,32 +37,24 @@ export default function Home() {
               <p className={styles.eyebrow}>Monday, August 24</p>
               <h1>Stay curious.</h1>
             </div>
-            <div className={styles.counter}><span>01</span> / 08</div>
+            <div className={styles.counter}><span>01</span> / {dummyContent.length.toString().padStart(2, '0')}</div>
           </div>
 
-          <section className={styles.learningCard} aria-labelledby="card-title">
-            <div className={styles.cardHeader}>
-              <span className={styles.topic}>NATURAL HISTORY</span>
-              <div className={styles.cardActions}>
-                <button type="button" aria-label="Save this lesson">☆</button>
-                <button type="button" aria-label="More options">•••</button>
+          {dummyContent.map((content, index) => (
+            <section key={content.id} className={styles.learningCard} aria-labelledby={`card-title-${index}`}>
+              <div className={styles.cardHeader}>
+                <span className={styles.topic}>{content.category?.toUpperCase() || "LEARNING"}</span>
+                <div className={styles.cardActions}>
+                  <button type="button" aria-label="Save this lesson">☆</button>
+                  <button type="button" aria-label="More options">•••</button>
+                </div>
               </div>
-            </div>
-            <div className={styles.cardBody}>
-              <div className={styles.illustration} aria-hidden="true">
-                <div className={styles.sun} />
-                <div className={`${styles.mountain} ${styles.mountainOne}`} />
-                <div className={`${styles.mountain} ${styles.mountainTwo}`} />
-                <div className={styles.tree} />
-              </div>
-              <div className={styles.lessonCopy}>
-                <p className={styles.lessonNumber}>01 / FIELD NOTE</p>
-                <h2 id="card-title">The forest<br />is always<br /><em>listening.</em></h2>
-                <p className={styles.description}>Trees can share nutrients and warnings through vast underground fungal networks. A forest is less a collection of individuals, and more a quiet conversation.</p>
-                <div className={styles.cardMeta}><span>2 min read</span><span>Science</span></div>
-              </div>
-            </div>
-          </section>
+              {isArticle(content) && <ArticleCard content={content} />}
+              {isRiddle(content) && <RiddleCard content={content} />}
+              {isPuzzle(content) && <PuzzleCard content={content} />}
+              {isQuiz(content) && <QuizCard content={content} />}
+            </section>
+          ))}
 
           <div className={styles.nextCue}>
             <span className={styles.nextLine} />
