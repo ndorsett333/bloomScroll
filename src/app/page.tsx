@@ -1,3 +1,6 @@
+"use client";
+
+import { useRef, useState } from "react";
 import styles from "./page.module.css";
 import { dummyContent } from "@/data/dummy-content";
 import { ArticleCard } from "@/components/ArticleCard";
@@ -6,7 +9,50 @@ import { PuzzleCard } from "@/components/PuzzleCard";
 import { QuizCard } from "@/components/QuizCard";
 import { isArticle, isRiddle, isPuzzle, isQuiz } from "@/types/content";
 
+const transitionDuration = 360;
+
 export default function Home() {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [direction, setDirection] = useState<"next" | "previous">("next");
+  const lastNavigationAt = useRef(0);
+  const touchStartY = useRef<number | null>(null);
+  const activeContent = dummyContent[activeIndex];
+
+  function navigate(step: 1 | -1) {
+    const now = Date.now();
+    if (now - lastNavigationAt.current < transitionDuration) return;
+
+    lastNavigationAt.current = now;
+    setDirection(step === 1 ? "next" : "previous");
+    setActiveIndex((currentIndex) =>
+      (currentIndex + step + dummyContent.length) % dummyContent.length,
+    );
+  }
+
+  function handleWheel(event: React.WheelEvent<HTMLElement>) {
+    if (Math.abs(event.deltaY) < Math.abs(event.deltaX) || event.deltaY === 0) return;
+    event.preventDefault();
+    navigate(event.deltaY > 0 ? 1 : -1);
+  }
+
+  function handleKeyDown(event: React.KeyboardEvent<HTMLElement>) {
+    if (event.key !== "ArrowDown" && event.key !== "ArrowUp") return;
+    event.preventDefault();
+    navigate(event.key === "ArrowDown" ? 1 : -1);
+  }
+
+  function handleTouchStart(event: React.TouchEvent<HTMLElement>) {
+    touchStartY.current = event.touches[0]?.clientY ?? null;
+  }
+
+  function handleTouchEnd(event: React.TouchEvent<HTMLElement>) {
+    const startY = touchStartY.current;
+    const endY = event.changedTouches[0]?.clientY;
+    touchStartY.current = null;
+    if (startY === null || endY === undefined || Math.abs(startY - endY) < 48) return;
+    navigate(startY > endY ? 1 : -1);
+  }
+
   return (
     <div className={styles.page}>
       <header className={styles.mobileHeader}>
@@ -30,31 +76,41 @@ export default function Home() {
         </div>
       </aside>
 
-      <main className={styles.feed} id="discover">
+      <main
+        className={styles.feed}
+        id="discover"
+        onKeyDown={handleKeyDown}
+        onTouchEnd={handleTouchEnd}
+        onTouchStart={handleTouchStart}
+        onWheel={handleWheel}
+        tabIndex={0}
+      >
         <div className={styles.feedScroller}>
           <div className={styles.feedTopline}>
             <div>
               <p className={styles.eyebrow}>Monday, August 24</p>
               <h1>Stay curious.</h1>
             </div>
-            <div className={styles.counter}><span>01</span> / {dummyContent.length.toString().padStart(2, '0')}</div>
+            <div className={styles.counter}><span>{(activeIndex + 1).toString().padStart(2, '0')}</span> / {dummyContent.length.toString().padStart(2, '0')}</div>
           </div>
 
-          {dummyContent.map((content, index) => (
-            <section key={content.id} className={styles.learningCard} aria-labelledby={`card-title-${index}`}>
-              <div className={styles.cardHeader}>
-                <span className={styles.topic}>{content.category?.toUpperCase() || "LEARNING"}</span>
-                <div className={styles.cardActions}>
-                  <button type="button" aria-label="Save this lesson">☆</button>
-                  <button type="button" aria-label="More options">•••</button>
-                </div>
+          <section
+            key={activeContent.id}
+            className={`${styles.learningCard} ${direction === "next" ? styles.enterNext : styles.enterPrevious}`}
+            aria-labelledby={`card-title-${activeIndex}`}
+          >
+            <div className={styles.cardHeader}>
+              <span className={styles.topic}>{activeContent.category?.toUpperCase() || "LEARNING"}</span>
+              <div className={styles.cardActions}>
+                <button type="button" aria-label="Save this lesson">☆</button>
+                <button type="button" aria-label="More options">•••</button>
               </div>
-              {isArticle(content) && <ArticleCard content={content} />}
-              {isRiddle(content) && <RiddleCard content={content} />}
-              {isPuzzle(content) && <PuzzleCard content={content} />}
-              {isQuiz(content) && <QuizCard content={content} />}
-            </section>
-          ))}
+            </div>
+            {isArticle(activeContent) && <ArticleCard content={activeContent} />}
+            {isRiddle(activeContent) && <RiddleCard content={activeContent} />}
+            {isPuzzle(activeContent) && <PuzzleCard content={activeContent} />}
+            {isQuiz(activeContent) && <QuizCard content={activeContent} />}
+          </section>
 
           <div className={styles.nextCue}>
             <span className={styles.nextLine} />
