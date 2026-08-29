@@ -19,6 +19,8 @@ export default function Home() {
   const activeContent = dummyContent[activeIndex];
 
   function navigate(step: 1 | -1) {
+    if (activeIndex === 0 && step === -1) return;
+
     const now = Date.now();
     if (now - lastNavigationAt.current < transitionDuration) return;
 
@@ -99,13 +101,6 @@ export default function Home() {
             className={`${styles.learningCard} ${direction === "next" ? styles.enterNext : styles.enterPrevious}`}
             aria-labelledby={`card-title-${activeIndex}`}
           >
-            <div className={styles.cardHeader}>
-              <span className={styles.topic}>{activeContent.category?.toUpperCase() || "LEARNING"}</span>
-              <div className={styles.cardActions}>
-                <button type="button" aria-label="Save this lesson">☆</button>
-                <button type="button" aria-label="More options">•••</button>
-              </div>
-            </div>
             {isArticle(activeContent) && <ArticleCard content={activeContent} />}
             {isRiddle(activeContent) && <RiddleCard content={activeContent} />}
             {isPuzzle(activeContent) && <PuzzleCard content={activeContent} />}

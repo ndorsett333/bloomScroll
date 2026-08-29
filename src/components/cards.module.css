@@ -10,7 +10,8 @@
   background: #242422;
   scroll-snap-align: center;
   scroll-snap-stop: always;
-  min-height: calc(100svh - 120px);
+  min-height: 0;
+  height: 100%;
 }
 
 .cardHeader {
@@ -53,6 +54,7 @@
   display: grid;
   grid-template-columns: 48% 52%;
   flex: 1;
+  min-height: 0;
 }
 
 .illustration {
@@ -253,7 +255,6 @@
 @media (max-width: 900px) {
   .card {
     border-radius: 14px;
-    min-height: calc(100svh - 100px);
   }
 
   .cardBody {
@@ -276,7 +277,6 @@
 @media (max-width: 600px) {
   .card {
     border-radius: 12px;
-    min-height: calc(100svh - 90px);
   }
 
   .cardHeader {
