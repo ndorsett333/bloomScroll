@@ -70,7 +70,7 @@ export default function Home() {
         <nav className={styles.navigation} aria-label="Main navigation">
           <a className={styles.activeLink} href="#discover"><span>+</span> Discover</a>
           <a href="#saved"><span>o</span> Saved</a>
-          <a href="#profile"><span>i</span> Profile</a>
+          <a href="/profile"><span>i</span> Profile</a>
         </nav>
         <div className={styles.sidebarFooter}>
           <span className={styles.statusDot} />
